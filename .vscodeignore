@@ -1,0 +1,28 @@
+# Source and build tooling — not needed in the packaged extension
+src/**
+node_modules/**
+dist/**/*.map
+.vscode-test/**
+out/**
+
+# Config files
+tsconfig.json
+webpack.config.js
+eslint.config.js
+.prettierrc
+.prettierignore
+.gitignore
+.husky/**
+.github/**
+
+# TypeScript source maps
+**/*.map
+**/*.ts
+!**/*.d.ts
+
+# Contributor docs (kept in the repo but not in the VSIX)
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+
+# Misc
+*.vsix

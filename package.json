@@ -1,0 +1,134 @@
+{
+  "name": "vscode-peon-pet",
+  "displayName": "Peon Pet",
+  "description": "Animated orc that reacts to your AI coding agent events via peon-ping.",
+  "version": "0.1.0",
+  "publisher": "stephenmcqueen",
+  "license": "MIT",
+  "pricing": "Free",
+  "icon": "media/assets/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/smcqueen2/vscode-peon-pet"
+  },
+  "homepage": "https://github.com/smcqueen2/vscode-peon-pet#readme",
+  "bugs": {
+    "url": "https://github.com/smcqueen2/vscode-peon-pet/issues"
+  },
+  "engines": {
+    "vscode": "^1.85.0",
+    "node": ">=18.0.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "peon",
+    "warcraft",
+    "pet",
+    "ai",
+    "agent",
+    "peon-ping",
+    "pixel-art",
+    "fun"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:peon-pet.start",
+    "onCommand:peon-pet.changeCharacter",
+    "onView:peonPetView"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "type": "webview",
+          "id": "peonPetView",
+          "name": "Peon Pet",
+          "when": "config.peon-pet.position == 'explorer'"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "peon-pet.start",
+        "title": "Peon Pet: Open Panel"
+      },
+      {
+        "command": "peon-pet.changeCharacter",
+        "title": "Peon Pet: Change Character"
+      }
+    ],
+    "configuration": {
+      "title": "Peon Pet",
+      "properties": {
+        "peon-pet.position": {
+          "type": "string",
+          "enum": [
+            "explorer",
+            "panel"
+          ],
+          "enumDescriptions": [
+            "Show in the Explorer sidebar",
+            "Open as an editor panel tab"
+          ],
+          "default": "explorer",
+          "description": "Where to show Peon Pet."
+        },
+        "peon-pet.character": {
+          "type": "string",
+          "default": "orc",
+          "description": "Active character pack name. 'orc' is the built-in default. Custom packs go in ~/.openpeon/characters/<name>/."
+        },
+        "peon-pet.size": {
+          "type": "string",
+          "enum": [
+            "small",
+            "medium",
+            "large"
+          ],
+          "enumDescriptions": [
+            "150px",
+            "200px",
+            "250px"
+          ],
+          "default": "medium",
+          "description": "Sprite display size."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "webpack --mode development",
+    "watch": "webpack --mode development --watch",
+    "package": "webpack --mode production && npx @vscode/vsce package --no-dependencies",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"media/**/*.{js,css,html}\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"media/**/*.{js,css,html}\"",
+    "pretest": "npm run lint && npm run compile",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0",
+    "prettier": "^3.0.0",
+    "ts-loader": "^9.5.0",
+    "typescript": "^5.3.0",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.0"
+  }
+}
