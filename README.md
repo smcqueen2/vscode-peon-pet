@@ -130,6 +130,12 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to set up the development environ
 
 ---
 
+## Artwork
+
+The built-in Orc Peon character (`media/assets/orc-sprite-atlas.png` and related assets) is **original AI-generated pixel art**. It was created using an image generation model from a custom prompt describing an original orc character; it is not derived from, extracted from, or based on any third-party game assets.
+
+---
+
 ## Acknowledgements
 
 This extension would not exist without these projects:
