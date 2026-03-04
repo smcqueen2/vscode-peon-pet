@@ -6,7 +6,7 @@
 
 An animated Orc Peon that lives in your editor sidebar and reacts to your AI coding agent events in real time — powered by [peon-ping](https://github.com/PeonPing/peon-ping).
 
-<!-- TODO: add a demo GIF here once recorded -->
+![Peon Pet demo](media/demo.gif)
 
 > **Editor support:** Peon Pet works with any editor that runs [peon-ping](https://github.com/PeonPing/peon-ping) hooks — including **Cursor**, **Claude Code**, **Codex**, **OpenCode**, and **Kiro**.
 >
