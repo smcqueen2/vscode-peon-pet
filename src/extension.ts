@@ -3,7 +3,6 @@ import * as vscode from 'vscode';
 import { scanCharacters, getCharacterById, Character } from './characters';
 import { StateWatcher } from './state-watcher';
 import { PeonViewProvider } from './PeonViewProvider';
-import { PeonPanel, PeonPanelSerializer } from './PeonPanel';
 
 /**
  * Extension entry point. Called once by VS Code / Cursor when the extension
@@ -11,8 +10,7 @@ import { PeonPanel, PeonPanelSerializer } from './PeonPanel';
  *
  * Registers:
  * - The Explorer sidebar {@link PeonViewProvider}
- * - The editor-tab {@link PeonPanel} + its {@link PeonPanelSerializer}
- * - The `peon-pet.start` and `peon-pet.changeCharacter` commands
+ * - The `peon-pet.changeCharacter` command
  * - A configuration-change listener that propagates setting updates to live webviews
  */
 export function activate(context: vscode.ExtensionContext): void {
@@ -40,21 +38,7 @@ export function activate(context: vscode.ExtensionContext): void {
     }),
   );
 
-  // ── Panel serializer (restore panel after restart) ─────────────────────────
-  context.subscriptions.push(
-    vscode.window.registerWebviewPanelSerializer(
-      PeonPanel.viewType,
-      new PeonPanelSerializer(mediaPath, watcher, getActiveCharacter),
-    ),
-  );
-
   // ── Commands ───────────────────────────────────────────────────────────────
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand('peon-pet.start', () => {
-      PeonPanel.createOrShow(mediaPath, watcher, getActiveCharacter);
-    }),
-  );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('peon-pet.changeCharacter', async () => {
@@ -91,7 +75,6 @@ export function activate(context: vscode.ExtensionContext): void {
         .update('character', chosen.id, vscode.ConfigurationTarget.Global);
 
       viewProvider.reinit();
-      PeonPanel.currentPanel?.reinit();
 
       vscode.window.showInformationMessage(`Peon Pet: switched to ${chosen.manifest.name}`);
     }),
@@ -106,11 +89,9 @@ export function activate(context: vscode.ExtensionContext): void {
           .get<string>('character', 'orc');
         activeChar = getCharacterById(characters, activeCharId);
         viewProvider.reinit();
-        PeonPanel.currentPanel?.reinit();
       }
       if (e.affectsConfiguration('peon-pet.size')) {
         viewProvider.reinit();
-        PeonPanel.currentPanel?.reinit();
       }
     }),
   );

@@ -34,7 +34,6 @@
   ],
   "activationEvents": [
     "onStartupFinished",
-    "onCommand:peon-pet.start",
     "onCommand:peon-pet.changeCharacter",
     "onView:peonPetView"
   ],
@@ -45,16 +44,11 @@
         {
           "type": "webview",
           "id": "peonPetView",
-          "name": "Peon Pet",
-          "when": "config.peon-pet.position == 'explorer'"
+          "name": "Peon Pet"
         }
       ]
     },
     "commands": [
-      {
-        "command": "peon-pet.start",
-        "title": "Peon Pet: Open Panel"
-      },
       {
         "command": "peon-pet.changeCharacter",
         "title": "Peon Pet: Change Character"
@@ -63,19 +57,6 @@
     "configuration": {
       "title": "Peon Pet",
       "properties": {
-        "peon-pet.position": {
-          "type": "string",
-          "enum": [
-            "explorer",
-            "panel"
-          ],
-          "enumDescriptions": [
-            "Show in the Explorer sidebar",
-            "Open as an editor panel tab"
-          ],
-          "default": "explorer",
-          "description": "Where to show Peon Pet."
-        },
         "peon-pet.character": {
           "type": "string",
           "default": "orc",
