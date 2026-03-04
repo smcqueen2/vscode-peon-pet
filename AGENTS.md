@@ -6,7 +6,7 @@ A VS Code / Cursor extension that renders an animated **Orc Peon** sprite in the
 
 **GitHub repo:** https://github.com/smcqueen2/vscode-peon-pet (currently private)  
 **Installed in:** Cursor at `~/.cursor/extensions/peonpet.vscode-peon-pet-0.1.0/`  
-**Extension ID:** `stephenmcqueen.vscode-peon-pet`  
+**Extension ID:** `smcqueen.vscode-peon-pet`  
 **Version:** 0.1.0
 
 ---
@@ -16,9 +16,7 @@ A VS Code / Cursor extension that renders an animated **Orc Peon** sprite in the
 - Extension is **built, installed, and working** in Cursor
 - All source code is clean: ESLint + Prettier passing, TypeScript compiling with no errors
 - Git repo initialised with local identity `smcqueen2 <mcqueen_4@hotmail.co.uk>` (repo-local config, not global)
-- Two commits pushed to GitHub:
-  - `7e48795` — Initial release
-  - `3892f7a` — AI-generated artwork disclaimer added to README
+- Publisher registered at marketplace.visualstudio.com as `smcqueen`
 - GitHub Actions CI configured (lints, compiles, packages VSIX on every push/PR)
 - Husky pre-commit hook runs lint-staged on every commit
 
@@ -148,5 +146,5 @@ Git identity for this repo is set locally (not global):
 
 1. **Licensing sign-off** — contact peon-ping/peon-pet owner for permission to bundle the sprite assets, or regenerate them independently using `~/peon-pet/docs/sprite-atlas-prompt.md`
 2. **Demo GIF** — README has a placeholder comment for a demo GIF; needs recording
-3. **Marketplace publishing** — publisher account `stephenmcqueen` needs to be registered at https://marketplace.visualstudio.com/manage before `vsce publish` will work
+3. **Marketplace publishing** — publisher `smcqueen` registered; PAT + `vsce login smcqueen` still needed before `vsce publish` will work
 4. **Make repo public** — once licensing is resolved, flip the GitHub repo to public
