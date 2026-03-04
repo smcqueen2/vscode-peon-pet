@@ -24,5 +24,9 @@ eslint.config.js
 CONTRIBUTING.md
 CODE_OF_CONDUCT.md
 
+# Agent/dev context files
+AGENTS.md
+.cursor/**
+
 # Misc
 *.vsix
