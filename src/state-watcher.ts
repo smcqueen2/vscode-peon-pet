@@ -14,16 +14,6 @@ const STATE_FILE = path.join(os.homedir(), '.claude', 'hooks', 'peon-ping', '.st
 
 /** How often to poll the state file (ms). */
 const POLL_MS = 200;
-
-/**
- * Returns `true` if `cwd` is at or below any of the given `workspacePaths`.
- * When `workspacePaths` is empty the check is skipped (show everything).
- */
-function isInWorkspace(cwd: string | undefined, workspacePaths: string[]): boolean {
-  if (workspacePaths.length === 0) return true;
-  if (!cwd) return false;
-  return workspacePaths.some((wp) => cwd === wp || cwd.startsWith(wp + path.sep));
-}
 /** Sessions older than this are pruned from memory. */
 const SESSION_PRUNE_MS = 10 * 60 * 1000;
 /** A session is "hot" (actively running) within this window. */
@@ -61,16 +51,6 @@ export class StateWatcher implements vscode.Disposable {
   private eventListeners: PeonEventListener[] = [];
   private sessionListeners: SessionListener[] = [];
   private interval: ReturnType<typeof setInterval> | null = null;
-  private workspacePaths: string[] = [];
-
-  /**
-   * Restrict events and session dots to sessions whose working directory is
-   * at or below one of the given paths. Pass an empty array to disable
-   * filtering (default — shows all sessions).
-   */
-  setWorkspaceFilter(paths: string[]): void {
-    this.workspacePaths = paths;
-  }
 
   /** Start polling the state file. Safe to call multiple times. */
   start(): void {
@@ -146,11 +126,6 @@ export class StateWatcher implements vscode.Disposable {
       return;
     }
     this.lastTimestamp = timestamp;
-
-    // Ignore events from sessions outside the current workspace
-    if (!isInWorkspace(cwd, this.workspacePaths)) {
-      return;
-    }
 
     const now = Date.now();
 

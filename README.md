@@ -28,7 +28,7 @@ An animated Orc Peon that lives in your editor sidebar and reacts to your AI cod
   | `PreCompact`          | Alarmed     |
   | Idle (30 s)           | Sleeping    |
 
-- **Session dots** — coloured dots above the orc show how many AI sessions are active (green = hot, dark = warm, grey = cold). Hover for the working directory.
+- **Session dots** — coloured dots above the orc show how many AI sessions are active (green = hot, dark = warm, grey = cold). Hover for the working directory. Sessions across all open Cursor windows are shown — this is a peon-ping design: all agents write to a single shared state file. Hover tooltips and peon-ping's desktop notifications identify which workspace each session belongs to.
 - **Drag to reposition** — click and drag the orc anywhere in the sidebar panel.
 - **Custom character packs** — drop your own sprite atlas into `~/.openpeon/characters/` and switch with one command.
 
