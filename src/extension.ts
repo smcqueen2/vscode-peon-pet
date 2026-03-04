@@ -30,6 +30,13 @@ export function activate(context: vscode.ExtensionContext): void {
   watcher.start();
   context.subscriptions.push(watcher);
 
+  function updateWorkspaceFilter(): void {
+    const paths = vscode.workspace.workspaceFolders?.map((f) => f.uri.fsPath) ?? [];
+    watcher.setWorkspaceFilter(paths);
+  }
+  updateWorkspaceFilter();
+  context.subscriptions.push(vscode.workspace.onDidChangeWorkspaceFolders(updateWorkspaceFilter));
+
   // ── Sidebar view ───────────────────────────────────────────────────────────
   const viewProvider = new PeonViewProvider(mediaPath, watcher, getActiveCharacter);
   context.subscriptions.push(
