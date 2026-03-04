@@ -1,5 +1,6 @@
 # Peon Pet
 
+[![VS Code Marketplace](https://img.shields.io/badge/VS%20Code-Marketplace-blue?logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=smcqueen.vscode-peon-pet)
 [![Version](https://img.shields.io/visual-studio-marketplace/v/smcqueen.vscode-peon-pet)](https://marketplace.visualstudio.com/items?itemName=smcqueen.vscode-peon-pet)
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/smcqueen.vscode-peon-pet)](https://marketplace.visualstudio.com/items?itemName=smcqueen.vscode-peon-pet)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
