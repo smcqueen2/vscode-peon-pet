@@ -56,7 +56,6 @@ src/
   state-watcher.ts      ← polls peon-ping state file, emits events
   session-tracker.ts    ← in-memory session state
   PeonViewProvider.ts   ← sidebar WebviewViewProvider
-  PeonPanel.ts          ← editor-tab WebviewPanel + serializer
   webview-helpers.ts    ← shared HTML building and message helpers
 media/
   webview.html          ← webview HTML template

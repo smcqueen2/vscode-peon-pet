@@ -132,6 +132,16 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to set up the development environ
 
 ---
 
+## Built with AI assistance
+
+This project was built almost entirely through AI-assisted pair programming using [Claude](https://claude.ai) inside [Cursor](https://cursor.com). Without it, a project of this scope — a fully packaged VS Code extension with a canvas renderer, live file polling, session tracking, custom character packs, a test suite, and CI — would have taken weeks of evenings. It came together in a fraction of that time.
+
+The workflow throughout was conversational: describing the problem, reviewing the proposed approach, asking questions, pushing back where something felt wrong, and building understanding along the way rather than just accepting generated output. The code quality reviews, refactoring passes, and test coverage in this repo are a direct result of that process.
+
+If you're a developer curious about whether AI pair programming meaningfully changes what a solo developer can ship — this project is a concrete answer.
+
+---
+
 ## Artwork
 
 The built-in Orc Peon character (`media/assets/orc-sprite-atlas.png` and related assets) is **original AI-generated pixel art**. It was created using an image generation model from a custom prompt describing an original orc character; it is not derived from, extracted from, or based on any third-party game assets.
