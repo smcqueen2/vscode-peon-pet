@@ -31,6 +31,9 @@ jobs:
       - name: Compile
         run: npm run compile
 
+      - name: Test
+        run: npm test -- --runInBand
+
       - name: Package VSIX
         run: npx @vscode/vsce package --no-dependencies
 

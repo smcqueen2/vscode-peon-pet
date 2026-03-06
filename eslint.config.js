@@ -4,7 +4,7 @@ const tsParser = require('@typescript-eslint/parser');
 
 module.exports = [
   {
-    ignores: ['dist/**', 'node_modules/**', 'media/**'],
+    ignores: ['dist/**', 'node_modules/**'],
   },
   {
     files: ['src/**/*.ts'],
@@ -24,6 +24,28 @@ module.exports = [
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'no-console': 'warn',
+    },
+  },
+  {
+    files: ['media/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      sourceType: 'script',
+      globals: {
+        window: 'readonly',
+        document: 'readonly',
+        Image: 'readonly',
+        acquireVsCodeApi: 'readonly',
+        requestAnimationFrame: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        Math: 'readonly',
+      },
+    },
+    rules: {
+      'no-undef': 'error',
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      eqeqeq: 'error',
     },
   },
 ];

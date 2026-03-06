@@ -23,6 +23,19 @@ export class PeonViewProvider implements vscode.WebviewViewProvider {
   private watcherDisposable?: vscode.Disposable;
   private savedState?: WebviewState;
 
+  private static isWebviewState(value: unknown): value is WebviewState {
+    if (!value || typeof value !== 'object') {
+      return false;
+    }
+    const state = value as Record<string, unknown>;
+    return (
+      typeof state['petX'] === 'number' &&
+      Number.isFinite(state['petX']) &&
+      typeof state['petY'] === 'number' &&
+      Number.isFinite(state['petY'])
+    );
+  }
+
   constructor(
     private readonly mediaPath: string,
     private readonly watcher: StateWatcher,
@@ -43,11 +56,18 @@ export class PeonViewProvider implements vscode.WebviewViewProvider {
       this.savedState = context.state;
     }
 
-    webviewView.webview.onDidReceiveMessage((msg) => {
-      if (msg.command === 'ready') {
+    webviewView.webview.onDidReceiveMessage((msg: unknown) => {
+      if (!msg || typeof msg !== 'object') {
+        return;
+      }
+      const message = msg as Record<string, unknown>;
+      if (message['command'] === 'ready') {
         sendInit(webviewView.webview, this.getActiveCharacter(), this.savedState);
-      } else if (msg.command === 'save-state') {
-        this.savedState = msg.state as WebviewState;
+      } else if (
+        message['command'] === 'save-state' &&
+        PeonViewProvider.isWebviewState(message['state'])
+      ) {
+        this.savedState = message['state'];
       }
     });
 

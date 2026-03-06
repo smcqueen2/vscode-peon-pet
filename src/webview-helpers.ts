@@ -11,6 +11,15 @@ export interface WebviewState {
   petY: number;
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 /** Generates a cryptographically-random nonce for the Content-Security-Policy. */
 export function getNonce(): string {
   const bytes = new Uint8Array(16);
@@ -38,7 +47,34 @@ export function getWebviewOptions(mediaPath: string): vscode.WebviewOptions {
  * injecting the CSP header, stylesheet URI, nonce, and script URI.
  */
 export function buildHtml(webview: vscode.Webview, mediaPath: string, nonce: string): string {
-  const template = fs.readFileSync(path.join(mediaPath, 'webview.html'), 'utf8');
+  let template: string;
+  try {
+    template = fs.readFileSync(path.join(mediaPath, 'webview.html'), 'utf8');
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : 'unknown error';
+    void vscode.window.showErrorMessage(`Peon Pet: failed to load webview template (${reason}).`);
+    return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource};" />
+    <title>Peon Pet</title>
+    <style>
+      body {
+        padding: 12px;
+        color: var(--vscode-editor-foreground);
+        background: var(--vscode-editor-background);
+        font-family: var(--vscode-font-family, sans-serif);
+      }
+    </style>
+  </head>
+  <body>
+    <p>Peon Pet failed to load its webview template.</p>
+    <pre>${escapeHtml(reason)}</pre>
+  </body>
+</html>`;
+  }
 
   const cssUri = webview.asWebviewUri(vscode.Uri.file(path.join(mediaPath, 'webview.css')));
   const scriptUri = webview.asWebviewUri(vscode.Uri.file(path.join(mediaPath, 'webview.js')));

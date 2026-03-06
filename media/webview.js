@@ -86,6 +86,7 @@
   /** @type {HTMLImageElement|null} */
   let bgImg = null;
   let assetsReady = false;
+  let assetLoadVersion = 0;
 
   // ── Helpers ───────────────────────────────────────────────────────────────
   function loadImage(uri) {
@@ -99,6 +100,23 @@
       img.onerror = () => resolve(null);
       img.src = uri;
     });
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function leafDirName(cwd) {
+    if (!cwd) {
+      return null;
+    }
+    const segments = String(cwd).split('/').filter(Boolean);
+    return segments.length > 0 ? segments[segments.length - 1] : null;
   }
 
   function resize(size) {
@@ -339,12 +357,20 @@
     const msg = e.data;
     switch (msg.command) {
       case 'init': {
+        const loadVersion = ++assetLoadVersion;
+        assetsReady = false;
         resize(msg.size || 200);
-        [atlasImg, bordersImg, bgImg] = await Promise.all([
+        const [nextAtlas, nextBorders, nextBg] = await Promise.all([
           loadImage(msg.assets.spriteAtlas),
           loadImage(msg.assets.borders),
           loadImage(msg.assets.bg),
         ]);
+        if (loadVersion !== assetLoadVersion) {
+          break;
+        }
+        atlasImg = nextAtlas;
+        bordersImg = nextBorders;
+        bgImg = nextBg;
         assetsReady = true;
         playAnim('sleeping');
 
@@ -378,13 +404,20 @@
 
       case 'reinit': {
         // Character/size change
+        const loadVersion = ++assetLoadVersion;
         assetsReady = false;
         resize(msg.size || petSize);
-        [atlasImg, bordersImg, bgImg] = await Promise.all([
+        const [nextAtlas, nextBorders, nextBg] = await Promise.all([
           loadImage(msg.assets.spriteAtlas),
           loadImage(msg.assets.borders),
           loadImage(msg.assets.bg),
         ]);
+        if (loadVersion !== assetLoadVersion) {
+          break;
+        }
+        atlasImg = nextAtlas;
+        bordersImg = nextBorders;
+        bgImg = nextBg;
         assetsReady = true;
         playAnim('sleeping');
         break;
@@ -405,16 +438,15 @@
         : s.warm
           ? '<span style="color:#1aaa1a">idle</span>'
           : '<span style="color:#555">cold</span>';
-      const label = s.cwd ? s.cwd.split('/').filter(Boolean).pop() : '…' + s.id.slice(-8);
-      html = `${label} &bull; ${status}`;
+      const label = leafDirName(s.cwd) ?? '…' + s.id.slice(-8);
+      const safeLabel = escapeHtml(label);
+      html = `${safeLabel} &bull; ${status}`;
     } else if (currentSessions.length === 0) {
       html = 'Peon Pet';
     } else {
-      const names = currentSessions
-        .map((s) => (s.cwd ? s.cwd.split('/').filter(Boolean).pop() : null))
-        .filter(Boolean);
+      const names = currentSessions.map((s) => leafDirName(s.cwd)).filter(Boolean);
       html = names.length
-        ? names.join('<br>')
+        ? names.map((name) => escapeHtml(name)).join('<br>')
         : `${currentSessions.filter((s) => s.hot).length}/${currentSessions.length} sessions`;
     }
     tooltip.innerHTML = html;
