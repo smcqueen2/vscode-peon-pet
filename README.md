@@ -142,8 +142,8 @@ The built-in Orc Peon character (`media/assets/orc-sprite-atlas.png` and related
 
 This extension would not exist without these projects:
 
-- **[peon-ping](https://github.com/PeonPing/peon-ping)** — the AI coding event sound system that this extension hooks into for its animations and session tracking.
-- **[peon-pet](https://github.com/PeonPing/peon-pet)** — the original macOS Electron desktop pet that inspired this VS Code port. The sprite atlas format, session-dot concept, and character spec all originate there.
+- **[peon-ping](https://github.com/PeonPing/peon-ping)** by [Gary Sheng](https://github.com/garysheng) — the AI coding event sound system that this extension hooks into for its animations and session tracking.
+- **[peon-pet](https://github.com/PeonPing/peon-pet)** by [Gary Sheng](https://github.com/garysheng) — the original macOS Electron desktop pet that inspired this VS Code port. The sprite atlas format, session-dot concept, and character spec all originate there.
 - **[vscode-pokemon](https://github.com/jakobhoeg/vscode-pokemon)** by [jakobhoeg](https://github.com/jakobhoeg) — the VS Code extension that inspired the overall approach: webview-based pet, sidebar placement, custom character support, and project structure conventions.
 
 ---
