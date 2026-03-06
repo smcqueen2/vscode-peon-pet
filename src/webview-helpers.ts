@@ -11,14 +11,11 @@ export interface WebviewState {
   petY: number;
 }
 
-/** Generates a cryptographically-sufficient nonce for the Content-Security-Policy. */
+/** Generates a cryptographically-random nonce for the Content-Security-Policy. */
 export function getNonce(): string {
-  let text = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for (let i = 0; i < 32; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
 }
 
 /**
@@ -97,6 +94,13 @@ export function attachWatcher(webview: vscode.Webview, watcher: StateWatcher): v
   });
 }
 
+/** Reads the current size setting and converts it to pixels. */
+function getSizePx(): number {
+  return sizeFromSetting(
+    vscode.workspace.getConfiguration('peon-pet').get<string>('size', 'medium') ?? 'medium',
+  );
+}
+
 /**
  * Sends the `init` message to the webview once it signals it is ready.
  * Includes character asset URIs, display size, and any previously saved
@@ -108,12 +112,10 @@ export function sendInit(
   savedState: WebviewState | undefined,
 ): void {
   const assets = getCharacterAssets(character);
-  const uris = buildAssetUris(webview, assets);
-  const sizeSetting = vscode.workspace.getConfiguration('peon-pet').get<string>('size', 'medium');
   webview.postMessage({
     command: 'init',
-    assets: uris,
-    size: sizeFromSetting(sizeSetting),
+    assets: buildAssetUris(webview, assets),
+    size: getSizePx(),
     state: savedState ?? null,
   });
 }
@@ -124,11 +126,9 @@ export function sendInit(
  */
 export function sendReinit(webview: vscode.Webview, character: Character): void {
   const assets = getCharacterAssets(character);
-  const uris = buildAssetUris(webview, assets);
-  const sizeSetting = vscode.workspace.getConfiguration('peon-pet').get<string>('size', 'medium');
   webview.postMessage({
     command: 'reinit',
-    assets: uris,
-    size: sizeFromSetting(sizeSetting),
+    assets: buildAssetUris(webview, assets),
+    size: getSizePx(),
   });
 }

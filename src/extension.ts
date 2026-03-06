@@ -18,8 +18,10 @@ export function activate(context: vscode.ExtensionContext): void {
 
   // ── Character state ────────────────────────────────────────────────────────
   let characters = scanCharacters(mediaPath);
-  let activeCharId = vscode.workspace.getConfiguration('peon-pet').get<string>('character', 'orc');
-  let activeChar: Character = getCharacterById(characters, activeCharId);
+  let activeChar: Character = getCharacterById(
+    characters,
+    vscode.workspace.getConfiguration('peon-pet').get<string>('character', 'orc'),
+  );
 
   function getActiveCharacter(): Character {
     return activeChar;
@@ -67,14 +69,10 @@ export function activate(context: vscode.ExtensionContext): void {
         return;
       }
 
-      activeChar = chosen;
-      activeCharId = chosen.id;
-
+      // Persist the change; onDidChangeConfiguration handles the in-memory update and reinit
       await vscode.workspace
         .getConfiguration('peon-pet')
         .update('character', chosen.id, vscode.ConfigurationTarget.Global);
-
-      viewProvider.reinit();
 
       vscode.window.showInformationMessage(`Peon Pet: switched to ${chosen.manifest.name}`);
     }),
@@ -84,10 +82,10 @@ export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration((e) => {
       if (e.affectsConfiguration('peon-pet.character')) {
-        activeCharId = vscode.workspace
-          .getConfiguration('peon-pet')
-          .get<string>('character', 'orc');
-        activeChar = getCharacterById(characters, activeCharId);
+        activeChar = getCharacterById(
+          characters,
+          vscode.workspace.getConfiguration('peon-pet').get<string>('character', 'orc'),
+        );
         viewProvider.reinit();
       }
       if (e.affectsConfiguration('peon-pet.size')) {

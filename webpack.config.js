@@ -2,7 +2,7 @@
 
 const path = require('path');
 
-module.exports = {
+module.exports = (_env, argv) => ({
   target: 'node',
   entry: './src/extension.ts',
   output: {
@@ -25,5 +25,5 @@ module.exports = {
       },
     ],
   },
-  devtool: 'source-map',
-};
+  devtool: argv.mode === 'production' ? false : 'source-map',
+});

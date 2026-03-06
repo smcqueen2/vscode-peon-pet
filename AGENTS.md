@@ -32,7 +32,6 @@ vscode-peon-pet/
 │   ├── state-watcher.ts      ← polls peon-ping state file every 200ms; emits per-listener disposables
 │   ├── session-tracker.ts    ← in-memory session ID → timestamp map; builds SessionState[]
 │   ├── PeonViewProvider.ts   ← WebviewViewProvider for Explorer sidebar
-│   ├── PeonPanel.ts          ← WebviewPanel (editor tab) + PeonPanelSerializer (restore on restart)
 │   └── webview-helpers.ts    ← shared HTML builder, CSP, asset URI conversion, watcher wiring
 ├── media/
 │   ├── webview.html          ← HTML template with CSP/CSS/script placeholders
@@ -62,7 +61,7 @@ vscode-peon-pet/
 ## Key Technical Decisions
 
 ### State watcher (per-listener disposables)
-`StateWatcher.onPeonEvent()` and `onSessionUpdate()` each return a `vscode.Disposable` that removes only that specific listener. This means closing the sidebar panel never silences the editor-tab panel's listeners (and vice versa).
+`StateWatcher.onPeonEvent()` and `onSessionUpdate()` each return a `vscode.Disposable` that removes only that specific listener. This means closing one panel never silences another panel's listeners.
 
 ### Webview communication flow
 ```
@@ -96,7 +95,6 @@ Mouse events in `webview.js` move the `#pet-container` div. Position is saved vi
 
 | Key | Default | Values |
 |-----|---------|--------|
-| `peon-pet.position` | `explorer` | `explorer` \| `panel` |
 | `peon-pet.character` | `orc` | any installed pack ID |
 | `peon-pet.size` | `medium` | `small` (150px) \| `medium` (200px) \| `large` (250px) |
 
@@ -106,7 +104,6 @@ Mouse events in `webview.js` move the `#pet-container` div. Position is saved vi
 
 | Command | ID |
 |---------|----|
-| Peon Pet: Open Panel | `peon-pet.start` |
 | Peon Pet: Change Character | `peon-pet.changeCharacter` |
 
 ---

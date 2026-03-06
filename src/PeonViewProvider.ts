@@ -31,7 +31,7 @@ export class PeonViewProvider implements vscode.WebviewViewProvider {
 
   resolveWebviewView(
     webviewView: vscode.WebviewView,
-    _context: vscode.WebviewViewResolveContext<WebviewState>,
+    context: vscode.WebviewViewResolveContext<WebviewState>,
     _token: vscode.CancellationToken,
   ): void {
     this.view = webviewView;
@@ -39,8 +39,8 @@ export class PeonViewProvider implements vscode.WebviewViewProvider {
     webviewView.webview.options = getWebviewOptions(this.mediaPath);
     webviewView.webview.html = buildHtml(webviewView.webview, this.mediaPath, getNonce());
 
-    if (_context.state) {
-      this.savedState = _context.state;
+    if (context.state) {
+      this.savedState = context.state;
     }
 
     webviewView.webview.onDidReceiveMessage((msg) => {
@@ -67,10 +67,5 @@ export class PeonViewProvider implements vscode.WebviewViewProvider {
     if (this.view) {
       sendReinit(this.view.webview, this.getActiveCharacter());
     }
-  }
-
-  /** `true` if the sidebar panel is currently visible. */
-  isVisible(): boolean {
-    return this.view?.visible ?? false;
   }
 }

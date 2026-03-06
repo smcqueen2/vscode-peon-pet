@@ -88,6 +88,7 @@
     "lint:fix": "eslint src --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\" \"media/**/*.{js,css,html}\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"media/**/*.{js,css,html}\"",
+    "test": "jest",
     "pretest": "npm run lint && npm run compile",
     "prepare": "husky"
   },
@@ -98,6 +99,7 @@
     ]
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.0.0",
     "@types/vscode": "^1.85.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
@@ -105,8 +107,10 @@
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.0.0",
     "husky": "^9.0.0",
+    "jest": "^30.2.0",
     "lint-staged": "^15.0.0",
     "prettier": "^3.0.0",
+    "ts-jest": "^29.4.6",
     "ts-loader": "^9.5.0",
     "typescript": "^5.3.0",
     "webpack": "^5.89.0",

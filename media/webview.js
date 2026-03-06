@@ -1,3 +1,4 @@
+// @ts-check
 // Peon Pet webview — canvas 2D sprite renderer
 // Runs inside a VS Code webview (sandboxed iframe), no imports.
 (function () {
@@ -32,22 +33,30 @@
 
   // ── DOM ───────────────────────────────────────────────────────────────────
   const vscodeApi = acquireVsCodeApi();
-  const container = document.getElementById('pet-container');
-  const canvas = document.getElementById('c');
-  const tooltip = document.getElementById('tooltip');
-  const ctx = canvas.getContext('2d');
+  /** @type {HTMLDivElement} */
+  const container = /** @type {HTMLDivElement} */ (document.getElementById('pet-container'));
+  /** @type {HTMLCanvasElement} */
+  const canvas = /** @type {HTMLCanvasElement} */ (document.getElementById('c'));
+  /** @type {HTMLDivElement} */
+  const tooltip = /** @type {HTMLDivElement} */ (document.getElementById('tooltip'));
+  /** @type {CanvasRenderingContext2D} */
+  const ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext('2d'));
 
   ctx.imageSmoothingEnabled = false;
 
   // ── State ─────────────────────────────────────────────────────────────────
+  /** @type {number} */
   let petSize = 200;
+  /** @type {string} */
   let currentAnim = 'sleeping';
   let currentFrame = 0;
   let frameTimer = 0;
   let remainingLoops = 0;
   let pendingIdle = false;
   let anySessionActive = false;
+  /** @type {Array<{id: string, hot: boolean, warm: boolean, cwd: string|null}>} */
   let currentSessions = [];
+  /** @type {ReturnType<typeof setTimeout>|null} */
   let idleTimer = null;
 
   // Flash overlay
@@ -63,13 +72,18 @@
 
   // Particles
   const particlePos = new Float32Array(PARTICLE_COUNT * 2);
+  /** @type {Array<{vx: number, vy: number, gravity: number}>} */
   const particleVel = [];
+  /** @type {Array<[number, number, number]>} */
   const particleCol = [];
   let particleLife = 0;
 
   // Assets
+  /** @type {HTMLImageElement|null} */
   let atlasImg = null;
+  /** @type {HTMLImageElement|null} */
   let bordersImg = null;
+  /** @type {HTMLImageElement|null} */
   let bgImg = null;
   let assetsReady = false;
 
@@ -129,6 +143,9 @@
 
     if (name === 'celebrate') {
       burstParticles();
+    }
+    if (name === 'alarmed') {
+      shakeIntensity = 6;
     }
     if (name !== 'sleeping') {
       resetIdleTimer();
