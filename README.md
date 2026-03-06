@@ -11,7 +11,7 @@ An animated Orc Peon that lives in your editor sidebar and reacts to your AI cod
 
 > **Editor support:** Peon Pet works with any editor that runs [peon-ping](https://github.com/PeonPing/peon-ping) hooks — including **Cursor**, **Claude Code**, **Codex**, **OpenCode**, and **Kiro**.
 >
-> **VS Code + GitHub Copilot** is not yet supported out of the box. VS Code is actively developing native agent lifecycle hooks (inspired by peon-ping); once those land in the extension API this extension will be updated to support them. In the meantime, see [`pierceboggan/peon-ping-vscode`](https://github.com/pierceboggan/peon-ping-vscode) for an early community integration.
+> **VS Code + GitHub Copilot** — [Agent hooks are now in Preview in VS Code](https://code.visualstudio.com/docs/copilot/customization/hooks) (as of early 2026). VS Code reads hook configurations from the same files peon-ping writes to (`~/.claude/settings.json`, `.claude/settings.json`), using the same event format — `SessionStart`, `UserPromptSubmit`, `Stop`, `PreCompact`, and others. In practice this means peon-ping hooks **may already fire** during Copilot agent sessions without any extra setup. Full compatibility is not yet confirmed and the hooks API is subject to change while in Preview. This extension will be updated as the feature stabilises.
 
 ---
 
