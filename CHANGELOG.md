@@ -7,6 +7,41 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [Unreleased]
+
+### Added
+
+- Screen shake effect now triggers on `alarmed` events (was declared but never activated).
+- Unit tests for `session-tracker`, `characters`, `StateWatcher`, `webview-helpers`, and webview tooltip behaviour (38 tests via Jest).
+- ESLint coverage extended to `media/*.js` with browser globals config and `eqeqeq` / `no-undef` rules.
+- `buildHtml()` now returns a user-visible error page if the webview template file cannot be read, instead of throwing an unhandled exception.
+- Test step added to CI pipeline (`npm test -- --runInBand`).
+
+### Changed
+
+- `StateWatcher.poll()` decomposed into `readStateFile()`, `handleSessionEvent()`, and `fireListeners()` for clarity and testability.
+- Incoming `save-state` webview messages validated with a `private static isWebviewState()` type guard instead of a direct cast.
+- `onDidReceiveMessage` callback now types its argument as `unknown` and validates before use.
+- `getNonce()` now uses `crypto.getRandomValues()` instead of `Math.random()`.
+- `sendInit()` / `sendReinit()` share a single `getSizePx()` helper (previously duplicated the config read).
+- Webpack `devtool` is now `false` in production builds and `'source-map'` in development only (reduces VSIX bundle size).
+- Tooltip labels and session names are now HTML-escaped before being set as `innerHTML`.
+- Asset loading in `init`/`reinit` is now race-condition-safe via a version counter — a superseded load can no longer overwrite the result of a more recent one.
+
+### Fixed
+
+- Character changes via the `changeCharacter` command were calling `viewProvider.reinit()` twice (once directly, once via `onDidChangeConfiguration`). The direct call has been removed.
+- `activeCharId` shadow variable in `extension.ts` was tracked but never read; removed.
+- `isVisible()` method on `PeonViewProvider` was defined but had no callers; removed.
+- `_context` parameter in `resolveWebviewView` was named as unused but `context.state` was actively accessed; renamed to `context`.
+- `sessionCwds` cleanup loop was calling `tracker.entries()` on every iteration (O(n²)); now snapshots the tracked ID set once before the loop.
+
+### Removed
+
+- `peon-pet.position` setting and editor-tab panel placement (`WebviewPanel` / `PeonPanelSerializer`) — sidebar-only for now.
+
+---
+
 ## [0.1.0] — 2025-03-02
 
 ### Added
